@@ -7,8 +7,10 @@
   },
   "ExpandedNodes": [
     "",
+    "\\external",
+    "\\external\\glfw",
     "\\src"
   ],
-  "SelectedNode": "\\CMakeLists.txt",
+  "SelectedNode": "\\src\\main.cpp",
   "PreviewInSolutionExplorer": false
 }
