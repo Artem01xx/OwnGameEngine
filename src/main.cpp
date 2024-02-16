@@ -2,35 +2,75 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
-int main()
+
+
+//Initialize glfw library
+void initialize_glfw_library()
 {
-    GLFWwindow* window;
-
-    /* Initialize the library */
-    if (!glfwInit())
-        return -1;
-
-    /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
-    if (!window)
-    {
-        glfwTerminate();
-        return -1;
+    if (!glfwInit()) {
+        throw std::runtime_error("glfwInit Is Failed");
     }
+}
 
-    /* Make the window's context current */
-    glfwMakeContextCurrent(window);
+// Create a window 
+GLFWwindow* creating_window(int widthm, int height, const char* title)
+{
+    GLFWwindow* window = glfwCreateWindow(widthm, height, title, nullptr, nullptr);
+    if (!window){
+        glfwTerminate();
+        throw std::runtime_error("Window is not created");
+    }
+    return window;
+}
 
-    try
-    {
+// Loading glad library
+void load_glad_library()
+{
+    try{
         gladLoadGL();
     }
-    catch (const std::runtime_error& e)
-    {
+    catch (const std::runtime_error& e){
         std::cerr << "Throw Exception" << " " << e.what() << "\n";
     }
+}
 
-    std::cout << "OpenGl ver is - " << GLVersion.major << " " << GLVersion.minor << "\n";
+
+void window_size_callback(GLFWwindow* window, int width, int height)
+{
+    glViewport(0, 0, width, height);
+}
+
+void key_callback(GLFWwindow* window, int key, int scanmode, int action, int mode)
+{
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+    {
+        glfwSetWindowShouldClose(window, GL_TRUE);
+    }
+}
+
+
+// Check current opengl version
+void show_opengl_current_version();
+
+int main()
+{    
+    initialize_glfw_library();
+
+    int window_size_x = 840;
+    int window_size_y = 480;
+    /* Create a windowed mode window and its OpenGL context */
+    GLFWwindow* window = creating_window(window_size_x, window_size_y, "2D-Game");
+    glfwMakeContextCurrent(window);
+
+    // Checking for window size updating
+    glfwSetWindowSizeCallback(window, window_size_callback);
+    // Checking for key callback
+    glfwSetKeyCallback(window, key_callback);
+
+    // Trying to load glad library
+    load_glad_library();
+
+    show_opengl_current_version();
 
     glClearColor(0, 1, 0, 1);
 
@@ -49,4 +89,10 @@ int main()
 
     glfwTerminate();
     return 0;
+}
+
+
+void show_opengl_current_version()
+{
+    std::cout << "OpenGl ver is - " << glGetString(GL_VERSION) << "\n";
 }

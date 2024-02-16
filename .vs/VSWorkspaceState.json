@@ -7,10 +7,8 @@
   },
   "ExpandedNodes": [
     "",
-    "\\external",
-    "\\external\\glfw",
     "\\src"
   ],
-  "SelectedNode": "\\src\\main.cpp",
+  "SelectedNode": "\\src",
   "PreviewInSolutionExplorer": false
 }
