@@ -84,6 +84,40 @@ void key_callback(GLFWwindow* window, int key, int scanmode, int action, int mod
 // Check current opengl version
 void show_opengl_current_version();
 
+
+//______________________________SHADERS_______________________________///
+
+
+GLuint create_and_compile_shader(GLsizei count, const GLchar* type, GLenum shader_type)
+{
+    GLuint shader = glCreateShader(shader_type);
+    if (!shader) {
+        throw std::runtime_error("Failed to create a shader");
+    }
+    glShaderSource(shader, count, &type, nullptr);
+    glCompileShader(shader);
+    return shader;
+}
+
+GLuint create_programm(GLuint vs, GLuint fs)
+{
+    GLuint programm = glCreateProgram();
+    glAttachShader(programm, vs);
+    glAttachShader(programm, fs);
+    glLinkProgram(programm);
+    glDeleteShader(vs);
+    glDeleteShader(fs);
+    return programm;
+}
+
+
+void draw_triangle(GLuint vector_arr_obj)
+{
+    glBindVertexArray(vector_arr_obj);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+}
+
+
 int main()
 {    
     initialize_glfw_library();
@@ -106,24 +140,11 @@ int main()
 
     glClearColor(0, 1, 0, 1);
 
-    //Creating vertex shader
-    GLuint vs = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vs, 1, &VerticesData::vertex_shaders, nullptr);
-    glCompileShader(vs);
-    //Creating fragment shader
-    GLuint fs = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fs, 1, &VerticesData::fragment_shaders, nullptr);
-    glCompileShader(fs);
-    //Getting programm
-    GLuint shader_program = glCreateProgram();
-    //Attaching shaders
-    glAttachShader(shader_program, vs);
-    glAttachShader(shader_program, fs);
-    //Linking
-    glLinkProgram(shader_program);
-    //Deleting shader
-    glDeleteShader(vs);
-    glDeleteShader(fs);
+    //Created vertical and fragment shaders
+    GLuint vs = create_and_compile_shader(1, VerticesData::vertex_shaders, GL_VERTEX_SHADER);
+    GLuint fs = create_and_compile_shader(1, VerticesData::fragment_shaders, GL_FRAGMENT_SHADER);
+
+    GLuint shader_program = create_programm(vs, fs);
     
     GLuint point_vbo = 0;
     glGenBuffers(1, &point_vbo);
@@ -154,8 +175,8 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
 
         glUseProgram(shader_program);
-        glBindVertexArray(vector_array_obj);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        // Draw triangle
+        draw_triangle(vector_array_obj);
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
 
