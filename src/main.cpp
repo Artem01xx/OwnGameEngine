@@ -1,5 +1,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include "Renderer/Shader.h"
+#include <string>
 #include <iostream>
 
 namespace VerticesData
@@ -88,27 +90,6 @@ void show_opengl_current_version();
 //______________________________SHADERS_______________________________///
 
 
-GLuint create_and_compile_shader(GLsizei count, const GLchar* type, GLenum shader_type)
-{
-    GLuint shader = glCreateShader(shader_type);
-    if (!shader) {
-        throw std::runtime_error("Failed to create a shader");
-    }
-    glShaderSource(shader, count, &type, nullptr);
-    glCompileShader(shader);
-    return shader;
-}
-
-GLuint create_programm(GLuint vs, GLuint fs)
-{
-    GLuint programm = glCreateProgram();
-    glAttachShader(programm, vs);
-    glAttachShader(programm, fs);
-    glLinkProgram(programm);
-    glDeleteShader(vs);
-    glDeleteShader(fs);
-    return programm;
-}
 
 
 void draw_triangle(GLuint vector_arr_obj)
@@ -141,11 +122,14 @@ int main()
     glClearColor(0, 1, 0, 1);
 
     //Created vertical and fragment shaders
-    GLuint vs = create_and_compile_shader(1, VerticesData::vertex_shaders, GL_VERTEX_SHADER);
-    GLuint fs = create_and_compile_shader(1, VerticesData::fragment_shaders, GL_FRAGMENT_SHADER);
-
-    GLuint shader_program = create_programm(vs, fs);
+    std::string vertex_shader = VerticesData::vertex_shaders;
+    std::string fragment_shader = VerticesData::fragment_shaders;
+    Renderer::Shader shader_programm(vertex_shader, fragment_shader);
     
+    if (!shader_programm.IsCompiled()) {
+        throw std::runtime_error("Shader not compiled");
+    }
+
     GLuint point_vbo = 0;
     glGenBuffers(1, &point_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, point_vbo);
@@ -174,7 +158,7 @@ int main()
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glUseProgram(shader_program);
+        shader_programm.Use();
         // Draw triangle
         draw_triangle(vector_array_obj);
         /* Swap front and back buffers */
@@ -187,9 +171,6 @@ int main()
     glfwTerminate();
     return 0;
 }
-
-
-
 
 
 void show_opengl_current_version()
