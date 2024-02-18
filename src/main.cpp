@@ -5,7 +5,7 @@
 #include <string>
 #include <iostream>
 
-namespace VerticesData
+namespace VertexFragmentData
 {
     GLfloat points[] =
     {
@@ -19,24 +19,6 @@ namespace VerticesData
         0.0f, 0.1f, 0.0f,
         0.0f, 0.0f, 1.0f,
     };
-
-    //const char* vertex_shaders =
-    //    "#version 450\n"
-    //    "layout(location = 0) in vec3 vertex_position;"
-    //    "layout(location = 1) in vec3 vertex_color;"
-    //    "out vec3 color;"
-    //    "void main(){"
-    //    "    color = vertex_color;"
-    //    "    gl_Position = vec4(vertex_position, 1.0f);"
-    //    "}";
-
-    //const char* fragment_shaders =
-    //    "#version 450\n"
-    //    "in vec3 color;"
-    //    "out vec4 frag_color;"
-    //    "void main(){"
-    //    "   frag_color = vec4(color, 1.0f);"
-    //    "}";
 };
 
 //Initialize glfw library
@@ -131,12 +113,12 @@ int main(int argc, char** argv)
         GLuint point_vbo = 0;
         glGenBuffers(1, &point_vbo);
         glBindBuffer(GL_ARRAY_BUFFER, point_vbo);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(VerticesData::points), VerticesData::points, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(VertexFragmentData::points), VertexFragmentData::points, GL_STATIC_DRAW);
 
         GLuint color_vbo = 0;
         glGenBuffers(1, &color_vbo);
         glBindBuffer(GL_ARRAY_BUFFER, color_vbo);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(VerticesData::colors), VerticesData::colors, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(VertexFragmentData::colors), VertexFragmentData::colors, GL_STATIC_DRAW);
 
         GLuint vector_array_obj = 0;
         glGenVertexArrays(1, &vector_array_obj);

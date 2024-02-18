@@ -81,9 +81,5 @@ namespace Renderer
 		shader.is_compiled = false;
 	}
 
-	Shader::~Shader()
-	{
-		glDeleteProgram(shader_program);
-	}
-
+	Shader::~Shader() { glDeleteProgram(shader_program); }
 }
