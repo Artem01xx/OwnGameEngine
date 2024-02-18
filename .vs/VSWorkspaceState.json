@@ -7,7 +7,12 @@
   },
   "ExpandedNodes": [
     "",
-    "\\src"
+    "\\resources",
+    "\\resources\\shaders",
+    "\\src",
+    "\\src\\renderer",
+    "\\src\\resources"
   ],
+  "SelectedNode": "\\src\\resources\\ResourceManager.cpp",
   "PreviewInSolutionExplorer": false
 }
