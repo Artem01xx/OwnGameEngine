@@ -2,10 +2,11 @@
 #include <GLFW/glfw3.h>
 #include "Renderer/Shader.h"
 #include "resources/ResourceManager.h"
+#include "renderer/texture_2d.h"
 #include <string>
 #include <iostream>
 
-namespace VertexFragmentData
+namespace Data
 {
     GLfloat points[] =
     {
@@ -18,6 +19,13 @@ namespace VertexFragmentData
         1.0f, 0.0f, 0.0f,
         0.0f, 0.1f, 0.0f,
         0.0f, 0.0f, 1.0f,
+    };
+
+    GLfloat textures[] =
+    {
+        0.5f, 1.0f,
+        1.0f, 0.0f,
+        0.0f, 0.0f,
     };
 };
 
@@ -70,17 +78,6 @@ void key_callback(GLFWwindow* window, int key, int scanmode, int action, int mod
 void show_opengl_current_version();
 
 
-//______________________________SHADERS_______________________________///
-
-
-
-
-void draw_triangle(GLuint vector_arr_obj)
-{
-    glBindVertexArray(vector_arr_obj);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
-}
-
 
 int main(int argc, char** argv)
 {    
@@ -110,15 +107,22 @@ int main(int argc, char** argv)
             throw std::runtime_error("Cannot Load Shader");
         }
 
+        auto texture = rm.LoadTexture("DefaultShader", "res/textures/map_16x16.png");
+
         GLuint point_vbo = 0;
         glGenBuffers(1, &point_vbo);
         glBindBuffer(GL_ARRAY_BUFFER, point_vbo);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(VertexFragmentData::points), VertexFragmentData::points, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(Data::points), Data::points, GL_STATIC_DRAW);
 
         GLuint color_vbo = 0;
         glGenBuffers(1, &color_vbo);
         glBindBuffer(GL_ARRAY_BUFFER, color_vbo);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(VertexFragmentData::colors), VertexFragmentData::colors, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(Data::colors), Data::colors, GL_STATIC_DRAW);
+
+        GLuint textures_vbo = 0;
+        glGenBuffers(1, &textures_vbo);
+        glBindBuffer(GL_ARRAY_BUFFER, textures_vbo);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(Data::textures), Data::textures, GL_STATIC_DRAW);
 
         GLuint vector_array_obj = 0;
         glGenVertexArrays(1, &vector_array_obj);
@@ -132,15 +136,22 @@ int main(int argc, char** argv)
         glBindBuffer(GL_ARRAY_BUFFER, color_vbo);
         glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
+        glEnableVertexAttribArray(2);
+        glBindBuffer(GL_ARRAY_BUFFER, textures_vbo);
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
+
+        default_shader_program->Use();
+        default_shader_program->SetId("tex", 0);
+
         /* Loop until the user closes the window */
         while (!glfwWindowShouldClose(window))
         {
             /* Render here */
             glClear(GL_COLOR_BUFFER_BIT);
 
-            default_shader_program->Use();
-            // Draw triangle
-            draw_triangle(vector_array_obj);
+            glBindVertexArray(vector_array_obj);
+            texture->bind();
+            glDrawArrays(GL_TRIANGLES, 0, 3);
             /* Swap front and back buffers */
             glfwSwapBuffers(window);
 

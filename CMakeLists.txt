@@ -11,7 +11,10 @@ src/main.cpp
 src/Renderer/Shader.cpp
 src/Renderer/Shader.h 
 src/resources/ResourceManager.cpp
-src/resources/ResourceManager.h)
+src/resources/ResourceManager.h
+src/resources/stb_image.h 
+src/renderer/texture_2d.h 
+src/renderer/texture_2d.cpp)
 
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_14)

@@ -81,5 +81,10 @@ namespace Renderer
 		shader.is_compiled = false;
 	}
 
+	void Renderer::Shader::SetId(const std::string& name, const GLint value)
+	{
+		glUniform1i(glGetUniformLocation(shader_program, name.c_str()), value);
+	}
+
 	Shader::~Shader() { glDeleteProgram(shader_program); }
 }

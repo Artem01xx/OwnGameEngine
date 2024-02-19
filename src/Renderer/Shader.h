@@ -12,6 +12,7 @@ namespace Renderer
 
 		bool IsCompiled();
 		void Use() const;
+		void SetId(const std::string& name, const GLint value);
 		Shader() = delete;
 		Shader(const Shader&) = delete;
 		Shader& operator = (const Shader&) = delete;

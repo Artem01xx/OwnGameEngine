@@ -7,12 +7,12 @@
   },
   "ExpandedNodes": [
     "",
-    "\\resources",
-    "\\resources\\shaders",
+    "\\res",
+    "\\res\\shaders",
     "\\src",
     "\\src\\renderer",
     "\\src\\resources"
   ],
-  "SelectedNode": "\\src\\resources\\ResourceManager.cpp",
+  "SelectedNode": "\\res\\shaders\\vertex_shader.txt",
   "PreviewInSolutionExplorer": false
 }
