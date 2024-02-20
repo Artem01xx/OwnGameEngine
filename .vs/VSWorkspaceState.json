@@ -9,10 +9,9 @@
     "",
     "\\res",
     "\\res\\shaders",
-    "\\src",
     "\\src\\renderer",
     "\\src\\resources"
   ],
-  "SelectedNode": "\\res\\shaders\\vertex_shader.txt",
+  "SelectedNode": "\\src",
   "PreviewInSolutionExplorer": false
 }

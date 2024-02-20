@@ -3,6 +3,7 @@
 #include "Renderer/Shader.h"
 #include "resources/ResourceManager.h"
 #include "renderer/texture_2d.h"
+#include "glm/vec2.hpp"
 #include <string>
 #include <iostream>
 
@@ -83,10 +84,10 @@ int main(int argc, char** argv)
 {    
     initialize_glfw_library();
 
-    int window_size_x = 840;
-    int window_size_y = 480;
+    glm::ivec2 window_size(840, 480);
+   
     /* Create a windowed mode window and its OpenGL context */
-    GLFWwindow* window = creating_window(window_size_x, window_size_y, "2D-Game");
+    GLFWwindow* window = creating_window(window_size.x, window_size.y, "2D-Game");
     glfwMakeContextCurrent(window);
 
     // Checking for window size updating
